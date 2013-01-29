@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My12306", "My12306\My12306.csproj", "{7FA1798B-437A-40DE-B049-33F1B61DCCDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R12306", "R12306\R12306.csproj", "{F98A4085-5697-43A8-B7DC-8A186FD322E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCode", "ImageCode\ImageCode.csproj", "{548BCE12-76E7-4532-A5B7-527001F2E6A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FA1798B-437A-40DE-B049-33F1B61DCCDF}.Debug|x86.ActiveCfg = Debug|x86
+		{7FA1798B-437A-40DE-B049-33F1B61DCCDF}.Debug|x86.Build.0 = Debug|x86
+		{7FA1798B-437A-40DE-B049-33F1B61DCCDF}.Release|x86.ActiveCfg = Release|x86
+		{7FA1798B-437A-40DE-B049-33F1B61DCCDF}.Release|x86.Build.0 = Release|x86
+		{F98A4085-5697-43A8-B7DC-8A186FD322E2}.Debug|x86.ActiveCfg = Debug|x86
+		{F98A4085-5697-43A8-B7DC-8A186FD322E2}.Debug|x86.Build.0 = Debug|x86
+		{F98A4085-5697-43A8-B7DC-8A186FD322E2}.Release|x86.ActiveCfg = Release|x86
+		{F98A4085-5697-43A8-B7DC-8A186FD322E2}.Release|x86.Build.0 = Release|x86
+		{548BCE12-76E7-4532-A5B7-527001F2E6A6}.Debug|x86.ActiveCfg = Debug|x86
+		{548BCE12-76E7-4532-A5B7-527001F2E6A6}.Debug|x86.Build.0 = Debug|x86
+		{548BCE12-76E7-4532-A5B7-527001F2E6A6}.Release|x86.ActiveCfg = Release|x86
+		{548BCE12-76E7-4532-A5B7-527001F2E6A6}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
