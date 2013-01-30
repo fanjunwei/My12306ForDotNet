@@ -26,14 +26,10 @@ namespace R12306
     class Helper
     {
         public static int Timeout = 5000;
-        static CookieContainer _cookies = new CookieContainer();
+       
         public static string UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)";
 
-        public static CookieContainer Cookies
-        {
-            get { return _cookies; }
-            set { _cookies = value; }
-        }
+       
 
         public static bool AcceptAllCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
@@ -43,7 +39,7 @@ namespace R12306
         public static extern bool InternetSetCookie(string A_0, string A_1, string A_2);
         public static void OpenIE()
         {
-            List<Cookie> cookies = GetAllCookies(Cookies);
+            List<Cookie> cookies = GetAllCookies(CookiesManage.CurrCookies);
             foreach (Cookie cookie in cookies)
             {
              Helper.InternetSetCookie(

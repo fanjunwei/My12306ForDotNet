@@ -48,20 +48,6 @@
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
             this.dgvQuery = new System.Windows.Forms.DataGridView();
-            this.btnYuding = new System.Windows.Forms.Button();
-            this.cbxSeat = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.pcxCommitCode = new System.Windows.Forms.PictureBox();
-            this.txtCommitCode = new System.Windows.Forms.TextBox();
-            this.txtLog = new System.Windows.Forms.RichTextBox();
-            this.lblDealy = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtTrainNameRe = new System.Windows.Forms.TextBox();
-            this.btnStop = new System.Windows.Forms.Button();
-            this.cbxListPassenger = new System.Windows.Forms.CheckedListBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.cbxCheckCount = new System.Windows.Forms.CheckBox();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,6 +66,22 @@
             this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnYuding = new System.Windows.Forms.Button();
+            this.cbxSeat = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.pcxCommitCode = new System.Windows.Forms.PictureBox();
+            this.txtCommitCode = new System.Windows.Forms.TextBox();
+            this.txtLog = new System.Windows.Forms.RichTextBox();
+            this.lblDealy = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtTrainNameRe = new System.Windows.Forms.TextBox();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.cbxListPassenger = new System.Windows.Forms.CheckedListBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cbxCheckCount = new System.Windows.Forms.CheckBox();
+            this.btnAddCookie = new System.Windows.Forms.Button();
+            this.lblCookieCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pcxLoginImgCode)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuery)).BeginInit();
@@ -160,6 +162,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblCookieCount);
+            this.groupBox1.Controls.Add(this.btnAddCookie);
             this.groupBox1.Controls.Add(this.btnOpenID);
             this.groupBox1.Controls.Add(this.lblLoginError);
             this.groupBox1.Controls.Add(this.label1);
@@ -294,139 +298,6 @@
             this.dgvQuery.Size = new System.Drawing.Size(747, 219);
             this.dgvQuery.TabIndex = 20;
             this.dgvQuery.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgvQuery_MouseDoubleClick);
-            // 
-            // btnYuding
-            // 
-            this.btnYuding.Location = new System.Drawing.Point(461, 157);
-            this.btnYuding.Name = "btnYuding";
-            this.btnYuding.Size = new System.Drawing.Size(75, 23);
-            this.btnYuding.TabIndex = 24;
-            this.btnYuding.Text = "开始预订";
-            this.btnYuding.UseVisualStyleBackColor = true;
-            this.btnYuding.Click += new System.EventHandler(this.btnYuding_Click);
-            // 
-            // cbxSeat
-            // 
-            this.cbxSeat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxSeat.FormattingEnabled = true;
-            this.cbxSeat.Location = new System.Drawing.Point(494, 127);
-            this.cbxSeat.Name = "cbxSeat";
-            this.cbxSeat.Size = new System.Drawing.Size(87, 20);
-            this.cbxSeat.TabIndex = 25;
-            this.cbxSeat.SelectedIndexChanged += new System.EventHandler(this.cbxSeat_SelectedIndexChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(459, 131);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 12);
-            this.label7.TabIndex = 26;
-            this.label7.Text = "席别";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(5, 422);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 12);
-            this.label8.TabIndex = 27;
-            this.label8.Text = "验证码";
-            // 
-            // pcxCommitCode
-            // 
-            this.pcxCommitCode.Location = new System.Drawing.Point(52, 411);
-            this.pcxCommitCode.Name = "pcxCommitCode";
-            this.pcxCommitCode.Size = new System.Drawing.Size(100, 33);
-            this.pcxCommitCode.TabIndex = 28;
-            this.pcxCommitCode.TabStop = false;
-            this.pcxCommitCode.Click += new System.EventHandler(this.pcxCommitCode_Click);
-            // 
-            // txtCommitCode
-            // 
-            this.txtCommitCode.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.txtCommitCode.Location = new System.Drawing.Point(158, 416);
-            this.txtCommitCode.Name = "txtCommitCode";
-            this.txtCommitCode.Size = new System.Drawing.Size(100, 21);
-            this.txtCommitCode.TabIndex = 29;
-            this.txtCommitCode.TextChanged += new System.EventHandler(this.txtCommitCode_TextChanged);
-            // 
-            // txtLog
-            // 
-            this.txtLog.Location = new System.Drawing.Point(8, 450);
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ReadOnly = true;
-            this.txtLog.Size = new System.Drawing.Size(816, 157);
-            this.txtLog.TabIndex = 30;
-            this.txtLog.Text = "";
-            // 
-            // lblDealy
-            // 
-            this.lblDealy.AutoSize = true;
-            this.lblDealy.ForeColor = System.Drawing.Color.Red;
-            this.lblDealy.Location = new System.Drawing.Point(264, 422);
-            this.lblDealy.Name = "lblDealy";
-            this.lblDealy.Size = new System.Drawing.Size(23, 12);
-            this.lblDealy.TabIndex = 32;
-            this.lblDealy.Text = "---";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(457, 103);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 12);
-            this.label9.TabIndex = 33;
-            this.label9.Text = "车次";
-            // 
-            // txtTrainNameRe
-            // 
-            this.txtTrainNameRe.ImeMode = System.Windows.Forms.ImeMode.Close;
-            this.txtTrainNameRe.Location = new System.Drawing.Point(492, 100);
-            this.txtTrainNameRe.Name = "txtTrainNameRe";
-            this.txtTrainNameRe.Size = new System.Drawing.Size(100, 21);
-            this.txtTrainNameRe.TabIndex = 34;
-            this.txtTrainNameRe.Text = "D284";
-            this.txtTrainNameRe.Leave += new System.EventHandler(this.txtTrainNameRe_Leave);
-            // 
-            // btnStop
-            // 
-            this.btnStop.Location = new System.Drawing.Point(558, 157);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStop.TabIndex = 35;
-            this.btnStop.Text = "停止";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
-            // cbxListPassenger
-            // 
-            this.cbxListPassenger.CheckOnClick = true;
-            this.cbxListPassenger.FormattingEnabled = true;
-            this.cbxListPassenger.Location = new System.Drawing.Point(338, 27);
-            this.cbxListPassenger.Name = "cbxListPassenger";
-            this.cbxListPassenger.Size = new System.Drawing.Size(105, 148);
-            this.cbxListPassenger.TabIndex = 36;
-            this.cbxListPassenger.SelectedIndexChanged += new System.EventHandler(this.cbxListPassenger_SelectedIndexChanged);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(338, 11);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(65, 12);
-            this.label10.TabIndex = 37;
-            this.label10.Text = "常用联系人";
-            // 
-            // cbxCheckCount
-            // 
-            this.cbxCheckCount.AutoSize = true;
-            this.cbxCheckCount.Location = new System.Drawing.Point(616, 129);
-            this.cbxCheckCount.Name = "cbxCheckCount";
-            this.cbxCheckCount.Size = new System.Drawing.Size(84, 16);
-            this.cbxCheckCount.TabIndex = 38;
-            this.cbxCheckCount.Text = "检测余票数";
-            this.cbxCheckCount.UseVisualStyleBackColor = true;
             // 
             // Column1
             // 
@@ -573,6 +444,157 @@
             this.Column18.Name = "Column18";
             this.Column18.ReadOnly = true;
             // 
+            // btnYuding
+            // 
+            this.btnYuding.Location = new System.Drawing.Point(461, 157);
+            this.btnYuding.Name = "btnYuding";
+            this.btnYuding.Size = new System.Drawing.Size(75, 23);
+            this.btnYuding.TabIndex = 24;
+            this.btnYuding.Text = "开始预订";
+            this.btnYuding.UseVisualStyleBackColor = true;
+            this.btnYuding.Click += new System.EventHandler(this.btnYuding_Click);
+            // 
+            // cbxSeat
+            // 
+            this.cbxSeat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxSeat.FormattingEnabled = true;
+            this.cbxSeat.Location = new System.Drawing.Point(494, 127);
+            this.cbxSeat.Name = "cbxSeat";
+            this.cbxSeat.Size = new System.Drawing.Size(87, 20);
+            this.cbxSeat.TabIndex = 25;
+            this.cbxSeat.SelectedIndexChanged += new System.EventHandler(this.cbxSeat_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(459, 131);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "席别";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(5, 422);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 12);
+            this.label8.TabIndex = 27;
+            this.label8.Text = "验证码";
+            // 
+            // pcxCommitCode
+            // 
+            this.pcxCommitCode.Location = new System.Drawing.Point(52, 411);
+            this.pcxCommitCode.Name = "pcxCommitCode";
+            this.pcxCommitCode.Size = new System.Drawing.Size(100, 33);
+            this.pcxCommitCode.TabIndex = 28;
+            this.pcxCommitCode.TabStop = false;
+            this.pcxCommitCode.Click += new System.EventHandler(this.pcxCommitCode_Click);
+            // 
+            // txtCommitCode
+            // 
+            this.txtCommitCode.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.txtCommitCode.Location = new System.Drawing.Point(158, 416);
+            this.txtCommitCode.Name = "txtCommitCode";
+            this.txtCommitCode.Size = new System.Drawing.Size(100, 21);
+            this.txtCommitCode.TabIndex = 29;
+            this.txtCommitCode.TextChanged += new System.EventHandler(this.txtCommitCode_TextChanged);
+            // 
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(8, 450);
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.txtLog.Size = new System.Drawing.Size(816, 157);
+            this.txtLog.TabIndex = 30;
+            this.txtLog.Text = "";
+            // 
+            // lblDealy
+            // 
+            this.lblDealy.AutoSize = true;
+            this.lblDealy.ForeColor = System.Drawing.Color.Red;
+            this.lblDealy.Location = new System.Drawing.Point(264, 422);
+            this.lblDealy.Name = "lblDealy";
+            this.lblDealy.Size = new System.Drawing.Size(23, 12);
+            this.lblDealy.TabIndex = 32;
+            this.lblDealy.Text = "---";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(457, 103);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 12);
+            this.label9.TabIndex = 33;
+            this.label9.Text = "车次";
+            // 
+            // txtTrainNameRe
+            // 
+            this.txtTrainNameRe.ImeMode = System.Windows.Forms.ImeMode.Close;
+            this.txtTrainNameRe.Location = new System.Drawing.Point(492, 100);
+            this.txtTrainNameRe.Name = "txtTrainNameRe";
+            this.txtTrainNameRe.Size = new System.Drawing.Size(100, 21);
+            this.txtTrainNameRe.TabIndex = 34;
+            this.txtTrainNameRe.Text = "D284";
+            this.txtTrainNameRe.Leave += new System.EventHandler(this.txtTrainNameRe_Leave);
+            // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(558, 157);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStop.TabIndex = 35;
+            this.btnStop.Text = "停止";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // cbxListPassenger
+            // 
+            this.cbxListPassenger.CheckOnClick = true;
+            this.cbxListPassenger.FormattingEnabled = true;
+            this.cbxListPassenger.Location = new System.Drawing.Point(338, 27);
+            this.cbxListPassenger.Name = "cbxListPassenger";
+            this.cbxListPassenger.Size = new System.Drawing.Size(105, 148);
+            this.cbxListPassenger.TabIndex = 36;
+            this.cbxListPassenger.SelectedIndexChanged += new System.EventHandler(this.cbxListPassenger_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(338, 11);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(65, 12);
+            this.label10.TabIndex = 37;
+            this.label10.Text = "常用联系人";
+            // 
+            // cbxCheckCount
+            // 
+            this.cbxCheckCount.AutoSize = true;
+            this.cbxCheckCount.Location = new System.Drawing.Point(616, 129);
+            this.cbxCheckCount.Name = "cbxCheckCount";
+            this.cbxCheckCount.Size = new System.Drawing.Size(84, 16);
+            this.cbxCheckCount.TabIndex = 38;
+            this.cbxCheckCount.Text = "检测余票数";
+            this.cbxCheckCount.UseVisualStyleBackColor = true;
+            // 
+            // btnAddCookie
+            // 
+            this.btnAddCookie.Location = new System.Drawing.Point(182, 100);
+            this.btnAddCookie.Name = "btnAddCookie";
+            this.btnAddCookie.Size = new System.Drawing.Size(75, 23);
+            this.btnAddCookie.TabIndex = 10;
+            this.btnAddCookie.Text = "Add Cookie";
+            this.btnAddCookie.UseVisualStyleBackColor = true;
+            this.btnAddCookie.Click += new System.EventHandler(this.btnAddCookie_Click);
+            // 
+            // lblCookieCount
+            // 
+            this.lblCookieCount.AutoSize = true;
+            this.lblCookieCount.Location = new System.Drawing.Point(263, 105);
+            this.lblCookieCount.Name = "lblCookieCount";
+            this.lblCookieCount.Size = new System.Drawing.Size(0, 12);
+            this.lblCookieCount.TabIndex = 11;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -668,6 +690,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.Button btnAddCookie;
+        private System.Windows.Forms.Label lblCookieCount;
     }
 }
 

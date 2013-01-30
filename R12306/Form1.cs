@@ -36,13 +36,17 @@ namespace R12306
         TrainInfo currTrainInfo = null;
         private string getText(string url, bool isPost)
         {
+            return getText(url, isPost, CookiesManage.CurrCookies);
+        }
+        private string getText(string url, bool isPost, CookieContainer useCookie)
+        {
             try
             {
                 Uri uri = new Uri(url);
                 HttpWebRequest http = (HttpWebRequest)HttpWebRequest.Create(uri);
                 http.UserAgent = Helper.UserAgent;
 
-                http.CookieContainer = Helper.Cookies;
+                http.CookieContainer = useCookie;
                 http.Headers.Add("X-Requested-With", "XMLHttpRequest");
                 http.Timeout = Helper.Timeout;
                 if (isPost)
@@ -58,7 +62,7 @@ namespace R12306
                 HttpWebResponse response = (HttpWebResponse)http.GetResponse();
                 foreach (Cookie c in response.Cookies)
                 {
-                    Helper.Cookies.Add(c);
+                    useCookie.Add(c);
                 }
                 using (Stream stream = response.GetResponseStream())
                 {
@@ -75,7 +79,7 @@ namespace R12306
             }
             catch (Exception ex)
             {
-                addLog("网络错误:" + ex.Message,true);
+                addLog("网络错误:" + ex.Message, true);
                 return null;
             }
 
@@ -134,13 +138,13 @@ namespace R12306
                 HttpWebRequest http = (HttpWebRequest)HttpWebRequest.Create(uri);
                 http.UserAgent = Helper.UserAgent;
 
-                http.CookieContainer = Helper.Cookies;
+                http.CookieContainer = CookiesManage.CurrCookies;
                 http.Referer = referer;
                 http.Timeout = Helper.Timeout;
                 HttpWebResponse response = (HttpWebResponse)http.GetResponse();
                 foreach (Cookie c in response.Cookies)
                 {
-                    Helper.Cookies.Add(c);
+                    CookiesManage.CurrCookies.Add(c);
                 }
                 using (Stream stream = response.GetResponseStream())
                 {
@@ -394,24 +398,37 @@ randCode#";
                         cbxListPassenger.Items.Add(item, false);
                     }
                 }
-
+                addLog("联系人加载完成。", true);
             }
+            
         }
         private void getPassenger()
         {
-            addLog("初始化常用联系人", true);
+            addLog("初始化常用联系人...", true);
             string tem1 = null;
-            while (tem1 == null)
+            JObject json = null;
+            while (true)
             {
                 tem1 = getText("https://dynamic.12306.cn/otsweb/order/confirmPassengerAction.do?method=getpassengerJson", true);
                 if (tem1 == null)
                 {
                     addLog("初始化常用联系人错误，稍候重试", true);
                     Thread.Sleep(500);
+                    continue;
                 }
+                try
+                {
+                    json = (JObject)JsonConvert.DeserializeObject(tem1);
+                }
+                catch
+                {
+                    addLog("初始化常用联系人错误，稍候重试", true);
+                    Thread.Sleep(500);
+                    continue;
+                }
+                break;
             }
             addLog(tem1, false);
-            JObject json = (JObject)JsonConvert.DeserializeObject(tem1);
             JArray jsonPassengersArray = (JArray)json["passengerJson"];
             allPassengers.Clear();
             foreach (JObject p in jsonPassengersArray)
@@ -550,38 +567,58 @@ randCode#";
         }
         int QueryCount = 0;
         List<TrainInfo> trainList = new List<TrainInfo>();
-        bool query_tem_data = false;
+        bool queryCanRun = false;
+
+        class queryParm
+        {
+            public bool Loop { get; set; }
+            public CookieContainer UseCookie { get; set; }
+        }
+        private void query(bool loop)
+        {
+            if (loop)
+            {
+                foreach (CookieContainer c in CookiesManage.CookiesList)
+                {
+                    Thread t = new Thread(new ParameterizedThreadStart(runQuery));
+                    queryParm parm = new queryParm();
+                    parm.Loop = loop;
+                    parm.UseCookie = c;
+                    t.Start(parm);
+                }
+
+            }
+            else
+            {
+                Thread t = new Thread(new ParameterizedThreadStart(runQuery));
+                queryParm parm = new queryParm();
+                parm.Loop = loop;
+                parm.UseCookie = CookiesManage.CurrCookies;
+                t.Start(parm);
+            }
+
+        }
+        object runQuerLcok = new object();
         private void runQuery(object o)
         {
             if (!queryCanRun)
                 return;
             Helper.Timeout = 5000;
-            bool loop = (bool)o;
+            queryParm parm = (queryParm)o;
+            bool loop = parm.Loop;
             addLog("查询车次:" + QueryCount, true);
             string date;
             string tem_from = select_from;
-            string tem_to=select_to;
+            string tem_to = select_to;
             bool find = false;
-            if (query_tem_data)
-            {
-                date = (dtpDate.Value - new TimeSpan(1, 0, 0, 0)).ToString("yyyy-MM-dd");
-                Random r = new Random((int)DateTime.Now.Ticks);
-                int i1 = r.Next(0, stations.Count);
-                int i2 = r.Next(0, stations.Count);
-                tem_from = stations[i1].code;
-                tem_to = stations[i2].code;
-            }
-            else
-            {
-                date = dtpDate.Value.ToString("yyyy-MM-dd");
-            }
+            date = dtpDate.Value.ToString("yyyy-MM-dd");
             string search = null;
             string url = "https://dynamic.12306.cn/otsweb/order/querySingleAction.do?method=queryLeftTicket&orderRequest.train_date=" +
                 date + "&orderRequest.from_station_telecode=" + tem_from + "&orderRequest.to_station_telecode=" + tem_to +
                 "&orderRequest.train_no=&trainPassType=QB&trainClass=QB%23D%23Z%23T%23K%23QT%23&includeStudent=00&seatTypeAndNum=&orderRequest.start_time_str=00%3A00--24%3A00";
             while (search == null)
             {
-                search = getText(url, false);
+                search = getText(url, false, parm.UseCookie);
                 if (search == null)
                 {
                     Thread.Sleep(500);
@@ -589,135 +626,135 @@ randCode#";
             }
             if (search == "-10")
             {
-                reLogin();
+                //reLogin();
                 return;
             }
-            if (!query_tem_data)
+
+            search = search.Replace("\\n", "\r\n");
+            search = search.Replace("&nbsp;", "");
+            DataTable table = new DataTable();
+
+            using (StringReader reader = new StringReader(search))
             {
-                search = search.Replace("\\n", "\r\n");
-                search = search.Replace("&nbsp;", "");
-                DataTable table = new DataTable();
-                
-                using (StringReader reader = new StringReader(search))
+                string line;
+                table.Columns.Add("序号", typeof(string));
+                table.Columns.Add("车次", typeof(string));
+                table.Columns.Add("发站", typeof(string));
+                table.Columns.Add("到站", typeof(string));
+                table.Columns.Add("历时", typeof(string));
+                table.Columns.Add("商务座", typeof(string));
+                table.Columns.Add("特等座", typeof(string));
+                table.Columns.Add("一等座", typeof(string));
+                table.Columns.Add("二等座", typeof(string));
+                table.Columns.Add("高级软卧", typeof(string));
+                table.Columns.Add("软卧", typeof(string));
+                table.Columns.Add("硬卧", typeof(string));
+                table.Columns.Add("软座", typeof(string));
+                table.Columns.Add("硬座", typeof(string));
+                table.Columns.Add("无座", typeof(string));
+                table.Columns.Add("其他", typeof(string));
+                table.Columns.Add("购票", typeof(string));
+                table.Columns.Add("train_code", typeof(string));
+                table.Columns.Add("from_code", typeof(string));
+                table.Columns.Add("to_code", typeof(string));
+                table.Columns.Add("pass", typeof(string));
+                table.Columns.Add("has", typeof(string));
+                Regex reg = new Regex("<.*?>", RegexOptions.Singleline);
+
+                trainList.Clear();
+                TrainInfo.TrainNameRe = txtTrainNameRe.Text;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    string line;
-                    table.Columns.Add("序号", typeof(string));
-                    table.Columns.Add("车次", typeof(string));
-                    table.Columns.Add("发站", typeof(string));
-                    table.Columns.Add("到站", typeof(string));
-                    table.Columns.Add("历时", typeof(string));
-                    table.Columns.Add("商务座", typeof(string));
-                    table.Columns.Add("特等座", typeof(string));
-                    table.Columns.Add("一等座", typeof(string));
-                    table.Columns.Add("二等座", typeof(string));
-                    table.Columns.Add("高级软卧", typeof(string));
-                    table.Columns.Add("软卧", typeof(string));
-                    table.Columns.Add("硬卧", typeof(string));
-                    table.Columns.Add("软座", typeof(string));
-                    table.Columns.Add("硬座", typeof(string));
-                    table.Columns.Add("无座", typeof(string));
-                    table.Columns.Add("其他", typeof(string));
-                    table.Columns.Add("购票", typeof(string));
-                    table.Columns.Add("train_code", typeof(string));
-                    table.Columns.Add("from_code", typeof(string));
-                    table.Columns.Add("to_code", typeof(string));
-                    table.Columns.Add("pass", typeof(string));
-                    table.Columns.Add("has", typeof(string));
-                    Regex reg = new Regex("<.*?>", RegexOptions.Singleline);
+                    DataRow row = table.NewRow();
+                    string[] strs = line.Split(',');
 
-                    trainList.Clear();
-                    TrainInfo.TrainNameRe = txtTrainNameRe.Text;
-                    while ((line = reader.ReadLine()) != null)
+                    for (int i = 0; i < strs.Length; i++)
                     {
-                        DataRow row = table.NewRow();
-                        string[] strs = line.Split(',');
-
-                        for (int i = 0; i < strs.Length; i++)
+                        string item = strs[i];
+                        Regex commit = new Regex("onStopHover\\('(.*?)'\\)", RegexOptions.Singleline);
+                        Match mc = commit.Match(item);
+                        string commitstr = null;
+                        if (mc.Success)
                         {
-                            string item = strs[i];
-                            Regex commit = new Regex("onStopHover\\('(.*?)'\\)", RegexOptions.Singleline);
-                            Match mc = commit.Match(item);
-                            string commitstr = null;
-                            if (mc.Success)
-                            {
-                                commitstr = mc.Groups[1].Value;
-                                string[] code = commitstr.Split('#');
-                                row["train_code"] = code[0];
-                                row["from_code"] = code[1];
-                                row["to_code"] = code[2];
-                            }
-
-                            Regex reg_pass = new Regex("getSelected\\('(.*?)'\\)", RegexOptions.Singleline);
-                            Match mp = reg_pass.Match(item);
-
-                            if (mp.Success)
-                            {
-                                row["pass"] = mp.Groups[1].Value;
-                                string yuding_pass = row["pass"].ToString();
-                                addLog(yuding_pass, false);
-                                TrainInfo info = new TrainInfo(yuding_pass);
-                                if (info.Succuss())
-                                {
-                                    trainList.Add(new TrainInfo(yuding_pass));
-                                }
-                                row["has"] = "可预订";
-                            }
-
-                            item = reg.Replace(item, "");
-
-                            row[i] = item;
+                            commitstr = mc.Groups[1].Value;
+                            string[] code = commitstr.Split('#');
+                            row["train_code"] = code[0];
+                            row["from_code"] = code[1];
+                            row["to_code"] = code[2];
                         }
-                        table.Rows.Add(row);
 
+                        Regex reg_pass = new Regex("getSelected\\('(.*?)'\\)", RegexOptions.Singleline);
+                        Match mp = reg_pass.Match(item);
+
+                        if (mp.Success)
+                        {
+                            row["pass"] = mp.Groups[1].Value;
+                            string yuding_pass = row["pass"].ToString();
+                            addLog(yuding_pass, false);
+                            TrainInfo info = new TrainInfo(yuding_pass);
+                            if (info.Succuss())
+                            {
+                                trainList.Add(new TrainInfo(yuding_pass));
+                            }
+                            row["has"] = "可预订";
+                        }
+
+                        item = reg.Replace(item, "");
+
+                        row[i] = item;
                     }
-                    table.AcceptChanges();
+                    table.Rows.Add(row);
+
                 }
+                table.AcceptChanges();
+            }
 
-                setQueryDataSource(table);
+            setQueryDataSource(table);
 
-                //trainList.Clear();
-                //trainList.Add(new TrainInfo("K758#22:37#15:18#400000K75806#LYF#GZQ#13:55#洛阳#广州#01#20#1*****30024*****00001*****00003*****0000#476DAB1763DC5855E12A08A0F84FFC5555C6A8EE053F0FF3B46E0F88#F1"));
-                if (loop)
+            //trainList.Clear();
+            //trainList.Add(new TrainInfo("K758#22:37#15:18#400000K75806#LYF#GZQ#13:55#洛阳#广州#01#20#1*****30024*****00001*****00003*****0000#476DAB1763DC5855E12A08A0F84FFC5555C6A8EE053F0FF3B46E0F88#F1"));
+            if (loop)
+            {
+                trainList.Sort();
+                if (trainList.Count > 0 && (!cbxCheckCount.Checked || trainList[trainList.Count - 1].TicketCount > 0))
                 {
-                    trainList.Sort();
-                    if (trainList.Count > 0 && (!cbxCheckCount.Checked || trainList[trainList.Count - 1].TicketCount > 0))
+                    if (queryCanRun)
                     {
-
-                        currTrainInfo = trainList[trainList.Count - 1];
-                        TrainInfo.Date = dtpDate.Value.ToString("yyyy-MM-dd");
-
-                        addLog("开始预订:" + currTrainInfo.TrainName + ",余票:" + currTrainInfo.TicketCount, true);
-                        find = true;
-                        Thread t = new Thread(new ThreadStart(play));
-                        t.Start();
-                        yuding();
-
+                        lock (runQuerLcok)
+                        {
+                            if (queryCanRun)
+                            {
+                                currTrainInfo = trainList[trainList.Count - 1];
+                                TrainInfo.Date = dtpDate.Value.ToString("yyyy-MM-dd");
+                                addLog("开始预订:" + currTrainInfo.TrainName + ",余票:" + currTrainInfo.TicketCount, true);
+                                find = true;
+                                queryCanRun = false;
+                                //Thread t = new Thread(new ThreadStart(play));
+                                //t.Start();
+                                CookiesManage.SetCurrCookie(parm.UseCookie);
+                                yuding();
+                            }
+                        }
                     }
-                    else
-                    {
-                        addLog("未找到符合的车次", true);
-                    }
+
+                }
+                else
+                {
+                    addLog("未找到符合的车次", true);
                 }
             }
+
             if (!find && loop && queryCanRun)
             {
                 QueryCount++;
-                query_tem_data = !query_tem_data;
                 Thread.Sleep(500);
                 Thread t = new Thread(new ParameterizedThreadStart(runQuery));
-                t.Start(loop);
+                t.Start(parm);
             }
         }
-        bool queryCanRun = false;
-        private void query(bool loop)
-        {
 
-            Thread t = new Thread(new ParameterizedThreadStart(runQuery));
-            t.Start(loop);
-        }
         private void button1_Click(object sender, EventArgs e)
         {
-            query_tem_data = false;
             if (select_from == null)
             {
                 MessageBox.Show("请选择出发站");
@@ -764,7 +801,7 @@ randCode#";
             selectTrain();
         }
         private string logFileName = null;
-        private void addLog(string log,bool show)
+        private void addLog(string log, bool show)
         {
             try
             {
@@ -778,7 +815,7 @@ randCode#";
                     string str = "*" + DateTime.Now.ToString("HH:mm:ss") + " " + log + "\r\n";
                     if (logFileName == null)
                     {
-                        logFileName = "log_"+DateTime.Now.ToString("yyyyMMddHHmmss")+".txt";
+                        logFileName = "log_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
                     }
                     File.AppendAllText(logFileName, str);
                     if (show)
@@ -893,7 +930,7 @@ locationCode#F1";
                 //addLog(tem1);
 
                 //getCommitImgCode();
-                
+
                 Regex leftTicketStrReg = new Regex("<input.*?name=\"leftTicketStr\".*?value=\"(.*?)\".*?/>", RegexOptions.Singleline);
                 Match leftM = leftTicketStrReg.Match(result);
 
@@ -1049,6 +1086,11 @@ tFlag#dc";
             {
                 reLogin();
                 return;
+            }
+            if (result.IndexOf("网络可能存在问题") != -1)
+            {
+                Thread.Sleep(1000);
+                commit(lefttick, token, txtCommitCode.Text);
             }
             JObject o = (JObject)JsonConvert.DeserializeObject(result);
             object error = o["errMsg"];
@@ -1311,7 +1353,6 @@ orderRequest.reserve_flag#A";
         private void btnYuding_Click(object sender, EventArgs e)
         {
             canPlaySound = false;
-            query_tem_data = false;
             if (select_from == null)
             {
                 MessageBox.Show("请选择出发站");
@@ -1482,6 +1523,14 @@ orderRequest.reserve_flag#A";
                 SystemSounds.Asterisk.Play();
                 Thread.Sleep(500);
             }
+        }
+
+        private void btnAddCookie_Click(object sender, EventArgs e)
+        {
+            CookiesManage.AddCookie();
+            Thread t = new Thread(new ThreadStart(reLogin));
+            t.Start();
+            lblCookieCount.Text = CookiesManage.CookiesList.Count.ToString();
         }
 
 

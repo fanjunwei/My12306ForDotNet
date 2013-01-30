@@ -192,7 +192,7 @@ namespace R12306
                 http.Accept = "application/json, text/javascript, */*";
                 http.ContentType = "application/x-www-form-urlencoded";
                 http.UserAgent = Helper.UserAgent;
-                http.CookieContainer = Helper.Cookies;
+                http.CookieContainer = CookiesManage.CurrCookies;
                 http.Timeout = Helper.Timeout;
                 Stream postStream = http.GetRequestStream();
                 postStream.Write(bytestopost, 0, bytestopost.Length);
@@ -201,7 +201,7 @@ namespace R12306
                 HttpWebResponse response = (HttpWebResponse)http.GetResponse();
                 foreach (Cookie c in response.Cookies)
                 {
-                    Helper.Cookies.Add(c);
+                    CookiesManage.CurrCookies.Add(c);
                 }
 
                 Stream stream = response.GetResponseStream();
