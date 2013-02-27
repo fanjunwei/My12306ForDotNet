@@ -38,6 +38,8 @@
             this.pcxLoginImgCode = new System.Windows.Forms.PictureBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblCookieCount = new System.Windows.Forms.Label();
+            this.btnAddCookie = new System.Windows.Forms.Button();
             this.btnOpenID = new System.Windows.Forms.Button();
             this.lblLoginError = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -80,8 +82,6 @@
             this.cbxListPassenger = new System.Windows.Forms.CheckedListBox();
             this.label10 = new System.Windows.Forms.Label();
             this.cbxCheckCount = new System.Windows.Forms.CheckBox();
-            this.btnAddCookie = new System.Windows.Forms.Button();
-            this.lblCookieCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pcxLoginImgCode)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuery)).BeginInit();
@@ -140,6 +140,7 @@
             this.txtLoginImgCode.Size = new System.Drawing.Size(138, 21);
             this.txtLoginImgCode.TabIndex = 5;
             this.txtLoginImgCode.TextChanged += new System.EventHandler(this.txtLoginImgCode_TextChanged);
+            this.txtLoginImgCode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtLoginImgCode_KeyUp);
             // 
             // pcxLoginImgCode
             // 
@@ -179,6 +180,24 @@
             this.groupBox1.Size = new System.Drawing.Size(331, 173);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
+            // 
+            // lblCookieCount
+            // 
+            this.lblCookieCount.AutoSize = true;
+            this.lblCookieCount.Location = new System.Drawing.Point(263, 105);
+            this.lblCookieCount.Name = "lblCookieCount";
+            this.lblCookieCount.Size = new System.Drawing.Size(0, 12);
+            this.lblCookieCount.TabIndex = 11;
+            // 
+            // btnAddCookie
+            // 
+            this.btnAddCookie.Location = new System.Drawing.Point(182, 100);
+            this.btnAddCookie.Name = "btnAddCookie";
+            this.btnAddCookie.Size = new System.Drawing.Size(75, 23);
+            this.btnAddCookie.TabIndex = 10;
+            this.btnAddCookie.Text = "Add Cookie";
+            this.btnAddCookie.UseVisualStyleBackColor = true;
+            this.btnAddCookie.Click += new System.EventHandler(this.btnAddCookie_Click);
             // 
             // btnOpenID
             // 
@@ -576,24 +595,6 @@
             this.cbxCheckCount.TabIndex = 38;
             this.cbxCheckCount.Text = "检测余票数";
             this.cbxCheckCount.UseVisualStyleBackColor = true;
-            // 
-            // btnAddCookie
-            // 
-            this.btnAddCookie.Location = new System.Drawing.Point(182, 100);
-            this.btnAddCookie.Name = "btnAddCookie";
-            this.btnAddCookie.Size = new System.Drawing.Size(75, 23);
-            this.btnAddCookie.TabIndex = 10;
-            this.btnAddCookie.Text = "Add Cookie";
-            this.btnAddCookie.UseVisualStyleBackColor = true;
-            this.btnAddCookie.Click += new System.EventHandler(this.btnAddCookie_Click);
-            // 
-            // lblCookieCount
-            // 
-            this.lblCookieCount.AutoSize = true;
-            this.lblCookieCount.Location = new System.Drawing.Point(263, 105);
-            this.lblCookieCount.Name = "lblCookieCount";
-            this.lblCookieCount.Size = new System.Drawing.Size(0, 12);
-            this.lblCookieCount.TabIndex = 11;
             // 
             // Form1
             // 
